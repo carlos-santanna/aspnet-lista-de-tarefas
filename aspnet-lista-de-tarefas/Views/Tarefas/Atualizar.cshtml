@@ -1,0 +1,63 @@
+﻿@model aspnet_lista_de_tarefas.Models.Tarefa
+
+@{
+    ViewData["Title"] = "Atualizar";
+}
+
+@{
+    var Status = ViewBag.Status;
+    var TiposTarefas = ViewBag.TiposTarefas;
+}
+
+<h1>Atualizar</h1>
+
+<h4>Tarefa</h4>
+<hr />
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Atualizar">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="TarefaId" />
+            <div class="mb-3">
+                <label asp-for="Nome" class="form-label">Nome da tarefa</label>
+                <input asp-for="Nome" class="form-control" placeholder="Nome da tarefa">
+            </div>
+            <div class="mb-3">
+                <label asp-for="StatusId" class="form-label">Classificação</label>
+                <select asp-for="TipoTarefaId" class="form-control">
+                    @foreach (var item in TiposTarefas)
+                    {
+                        <option value="@item.TipoTarefaId">@item.Tipo</option>
+                    }
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <label asp-for="DataExecucao" class="form-label">Data</label>
+                <input type="date" asp-for="DataExecucao" class="form-control" />
+            </div>
+            <div class="mb-3">
+                <label asp-for="Descricao" class="form-label">Descrição</label>
+                <textarea asp-for="Descricao" class="form-control" rows="3"></textarea>
+            </div>
+            <div class="mb-3">
+                <label asp-for="StatusId" class="form-label">Situação</label>
+                <select asp-for="StatusId" class="form-control">
+                    @foreach (var item in Status)
+                    {
+                        <option value="@item.StatusId">@item.Nome</option>
+                    }
+                </select>
+            </div>
+
+            <div class="mb-3">
+                <input type="submit" value="Salvar" class="btn btn-outline-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-action="Index">Voltar</a>
+</div>
+

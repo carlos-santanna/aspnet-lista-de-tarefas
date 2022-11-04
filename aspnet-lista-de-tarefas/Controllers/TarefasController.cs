@@ -72,6 +72,96 @@ namespace aspnet_lista_de_tarefas.Controllers
         }
 
 
+        public IActionResult Atualizar(int id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var tarefa = _context.Tarefas.Find(id);
+
+            ViewBag.Status = _context.Status;
+            ViewBag.TiposTarefas = _context.TiposTarefas;
+
+            return View(tarefa);
+            
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Atualizar(int id,Tarefa tarefa)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var tarefaToUpdate = await _context.Tarefas.FirstOrDefaultAsync(
+                c => c.TarefaId == id
+                );
+
+            if (await TryUpdateModelAsync<Tarefa>(
+                tarefaToUpdate,
+                ""
+                ,c => c.Nome, c => c.TipoTarefaId, c => c.Descricao, c => c.DataExecucao, c => c.StatusId
+                ))
+            {
+                try
+                {
+                    await _context.SaveChangesAsync();
+                }   
+                catch (DbUpdateException)
+                {
+                    ModelState.AddModelError("", "Unable to save changes. " +
+                    "Try again, and if the problem persists, " +
+                    "see your system administrator.");
+                    
+                }
+                return RedirectToAction(nameof(Index));
+            }
+            else
+            {
+                ViewBag.Status = _context.Status;
+                ViewBag.TiposTarefas = _context.TiposTarefas;
+
+                return View(tarefa);
+            }
+            
+        }
+
+                
+        public async Task<IActionResult> Excluir(int id)
+        {
+            
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var tarefa = await _context.Tarefas.FirstOrDefaultAsync(
+                c => c.TarefaId == id
+                );
+
+           
+            try
+            {
+                _context.Tarefas.Remove(tarefa);
+                await _context.SaveChangesAsync();
+            }
+            catch (DbUpdateException)
+            {
+                ModelState.AddModelError("", "Unable to save changes. " +
+                "Try again, and if the problem persists, " +
+                "see your system administrator.");
+
+            }
+            return RedirectToAction(nameof(Index));
+           
+
+        }
+
+
 
 
     }

@@ -1,0 +1,35 @@
+﻿@model IEnumerable<aspnet_lista_de_tarefas.Models.TipoTarefa>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Tipos de tarefas</h1>
+
+<p>
+    <a asp-action="Create">Novo tipo de tarefa</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Tipo)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Tipo)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.TipoTarefaId">Atualizar</a> |
+                <a asp-action="Details" asp-route-id="@item.TipoTarefaId">Detalhes</a> |
+                <a asp-action="Delete" asp-route-id="@item.TipoTarefaId">Excluir</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>
